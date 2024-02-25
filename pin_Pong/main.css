@@ -1,0 +1,17 @@
+*{
+    margin: 0px;
+    font-family: "poppins",sans-serif;
+}
+body{
+    text-align: center;
+    background-color: #C0C0C0;
+}
+header{
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+canvas{
+    border: 1px black solid;
+    background-color: #FFFFF0;
+}

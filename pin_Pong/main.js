@@ -11,6 +11,7 @@ playerScore=0
 botScore=0
 
 let gameStart=false;
+
 //event listener for key pressed
 document.addEventListener("keydown",(event)=>{
     event.preventDefault();

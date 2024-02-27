@@ -1,0 +1,4 @@
+3.detection other pieces
+4.delete pieces when detection
+5.score
+6.rotate pieces

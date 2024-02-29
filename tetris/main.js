@@ -4,6 +4,8 @@ let context=canvas.getContext('2d');
 
 canvas.width=300
 canvas.height=600
+let startGame=false;
+let looser=false;
 
 let figure1=[
     [1,1],
@@ -49,13 +51,14 @@ document.addEventListener("keydown",(event)=>{
     event.preventDefault()
     move=event.key
     console.log(move)
+    homeScreen()
 })
 
 document.addEventListener("keyup",(event)=>{
     event.preventDefault()
     move='';
-})
-console.log(move)
+
+}) 
 
 let columns=10;
 let rows=20;
@@ -64,24 +67,30 @@ let square=30;
 //board
 let notOccupied="white"
 let board=[]
-for(let i=0;i<rows;i++){
-    board[i]=[];
-    for(let j=0;j<columns;j++){
-        board[i][j]=notOccupied;    
-    }
-}
-let drawBoard=()=>{
-    for(let i=0;i<columns;i++){
-        for(let j=0;j<rows;j++){
-            drawSquare(i,j,board[i][j])
+
+let setBoard=(board)=>{
+    for(let i=0;i<rows;i++){
+        board[i]=[]
+        for(let j=0;j<columns;j++){
+            board[i][j]=notOccupied;    
         }
     }
 }
-drawBoard()
+
+setBoard(board)
+
+let drawBoard=()=>{
+    for(let i=0;i<columns;i++){
+        for(let j=0;j<rows;j++){
+            drawSquare(i,j,board[j][i])
+        }
+    }
+}
+//drawBoard()
 
 //figures
 let figureX=3
-let figureY=0
+let figureY=-2
 
 function drawSquare(x,y,color){
     context.fillStyle = color;
@@ -131,13 +140,13 @@ function Game(x,y,figures){
     this.FigureWidith=(figure)=>{
         switch(figure[0].length){
             case 2:
-                this.maximunFigureWidith=7;
+                this.maximunFigureWidith=2;
                 break;
             case 3:
-                this.maximunFigureWidith=6;
+                this.maximunFigureWidith=3;
                 break;
             case 4:
-                this.maximunFigureWidith=5
+                this.maximunFigureWidith=4;
         }
     }
     this.FigureWidith(this.activeFigure[0])
@@ -155,72 +164,143 @@ function Game(x,y,figures){
             }
         }
         this.figureHeight(this.activeFigure[0])
+
         //figure down per second
-        this.downPerSecond=()=>{
-            if(this.y<20-this.maximunFigureHeight){
-                unDrawFigure(this.x,this.y,this.activeFigure[0]);
-                this.y += 1;
+        this.downPerSecond=()=>{   
+            if(this.y>=20-this.maximunFigureHeight || this.collision(0,1,this.activeFigure[0])){
+                this.drawOldFigure(this.activeFigure[0],this.activeFigure[1])
+                this.startOver()
             }
+            this.y += 1;
+            
         }
         setInterval(this.downPerSecond,1000)
 
+        //the update function
         this.update=()=>{
-            if(board[19][0]!="white"){
-                console.log("dsdsd")
+        
+        //detect collision
+        this.collision=(x,y,piece)=>{
+            for(let i=0;i<piece.length;i++){//rows
+                for(let j=0;j<piece[i].length;j++){
+                    if(!piece[i][j]){
+                        continue;
+                    }
+                    let nextX=this.x+j+x;
+                    let nextY=this.y+i+y;
+
+                    // skip board[-1]
+                    if(nextY < 0){
+                        continue;
+                    }
+                    //skip board[9]
+                    
+                    if(nextY >= rows){
+                        return true;
+                    }
+                    if(nextX >= columns || nextX < 0 ){
+                        return false
+                    }
+                    //check for old figures
+                    if(board[nextY][nextX] != notOccupied){
+                        return true;
+                    }
+                }
             }
+            return false
+        }
+        //draw the old piece and start the new one
+        this.drawOldFigure = (figure, color) => {
+            for (let i = 0; i < figure.length; i++) {
+                for (let j = 0; j < figure[i].length; j++) {
+                    if (figure[i][j] == 1) {
+                        board[this.y + i][this.x + j] = color;
+                    }
+                }
+            }
+        }
+        //start over
+        this.startOver=()=>{
+                this.x=x;
+                this.y=y;
+                this.activeFigure=this.newFigure(this.figures)
+                this.maximunFigureHeight=0;
+                this.figureHeight(this.activeFigure[0])
+                this.FigureWidith(this.activeFigure[0]);
+        }
+        //rotate pieces
+        
         //player moves
         switch (move){
             /*case "ArrowUp":
                 this.y -= 1;
                 break;*/
             case "ArrowDown":
-                if(this.y>=20-this.maximunFigureHeight){
-                    //this.oldPice=[this.x,this.y,this.activeFigure[0],this.activeFigure[1]];
-                    //this.playedPices.push(this.oldPice);
-                    for(let i=0;i<columns;i++){
-                        for(let j=0;j<rows;j++){
-                            board[j][i]=this.activeFigure[1]
-                        }
-                    }
-                    this.x=x;
-                    this.y=y;
-                    this.activeFigure=this.newFigure(this.figures)
-                    this.maximunFigureHeight=0;
-                    this.figureHeight(this.activeFigure[0])
-                    this.FigureWidith(this.activeFigure[0]);
-                }else{
-                    unDrawFigure(this.x,this.y,this.activeFigure[0])
-                    this.y += 1;
+                if(this.collision(0,1,this.activeFigure[0])){
+                    this.drawOldFigure(this.activeFigure[0],this.activeFigure[1])
+                    this.startOver()
                 }
+                this.y += 1;
                 break;
             case "ArrowRight":
-                unDrawFigure(this.x,this.y,this.activeFigure[0])
-                this.x>this.maximunFigureWidith ? this.x = this.x : this.x +=1;
+                this.x+this.maximunFigureWidith>=columns ? this.x=this.x : this.x++;
+                if(this.collision(1,0,this.activeFigure[0])){
+                    this.drawOldFigure(this.activeFigure[0],this.activeFigure[1]);
+                    this.startOver();
+                }
                 break;
             case "ArrowLeft":
-                unDrawFigure(this.x,this.y,this.activeFigure[0])
                 this.x<=0 ? this.x=this.x : this.x -=1;
+                if(this.collision(-1,0,this.activeFigure[0])){
+                    this.drawOldFigure(this.activeFigure[0],this.activeFigure[1]);
+                    this.startOver();
+                }
+                break;
+            case "Enter":
+                console.log("aasa")
+                this.startOver()
                 break;
         }
-        /*if(this.playedPices.length>0){
-            for(let i=0;i<this.playedPices.length;i++){
-                drawFigure(this.playedPices[i][0],this.playedPices[i][1],this.playedPices[i][2],this.playedPices[i][3])
-            }
-        }*/
-        
-        drawFigure(this.x,this.y,this.activeFigure[0],this.activeFigure[1])
+        if(this.y<0 && (this.collision(0,1,this.activeFigure[0]))){ 
+            setBoard(board);
+            unDrawFigure(this.x,this.y,this.activeFigure[0]);
+            startGame=false
+        }else{
+            drawBoard()
+            drawFigure(this.x,this.y,this.activeFigure[0],this.activeFigure[1])
+        }
     }
-
-
 }
 
 let figures=[[figure1,"yellow"],[figure2,"green"],[figure3,"red"],[figure4,"purple"],[figure5,"blue"],[figure6,"pink"],[figure7,"orange"]];
 
 let program = new Game(figureX,figureY,figures)
 
-function animate(){
-    requestAnimationFrame(animate);
-    
-    program.update()
+let homeScreen=()=>{
+    if(!startGame && move=='Enter'){
+        startGame=true;
+        animate()
+    }
 }
-animate()
+
+function animate(){
+    if(startGame){
+        requestAnimationFrame(animate);
+    
+        program.update()
+    }else{
+        looser=true;
+        init()
+    }
+    
+}
+function init(){
+    context.beginPath();
+    drawBoard();
+    context.font = "30px Arial";
+    context.fillStyle = "black";
+    looser ? context.fillText("Game over",100,100) : '';
+}
+
+init()
+

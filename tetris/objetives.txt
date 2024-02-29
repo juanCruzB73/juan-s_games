@@ -1,4 +1,3 @@
-3.detection other pieces
-4.delete pieces when detection
+4.delete pieces when full row
 5.score
-6.rotate pieces
+6.rotate pieces(special rotate in edges)

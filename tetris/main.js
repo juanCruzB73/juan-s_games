@@ -183,26 +183,27 @@ function Game(x,y,figures){
         this.collision=(x,y,piece)=>{
             for(let i=0;i<piece.length;i++){//rows
                 for(let j=0;j<piece[i].length;j++){
+
                     if(!piece[i][j]){
                         continue;
                     }
+                    
                     let nextX=this.x+j+x;
                     let nextY=this.y+i+y;
-
+                    
+                    /*if(nextX >= rows || nextX == 0 ){
+                        return false
+                    }*/
                     // skip board[-1]
                     if(nextY < 0){
                         continue;
                     }
-                    //skip board[9]
-                    
-                    if(nextY >= rows){
+                    /*if((nextX <= 0 || nextX >= columns || nextY >= rows)){
                         return true;
-                    }
-                    if(nextX >= columns || nextX < 0 ){
-                        return false
-                    }
+                    }*/
                     //check for old figures
-                    if(board[nextY][nextX] != notOccupied){
+                    console.log(board[nextY][nextX])
+                    if(board[nextY][nextX] != notOccupied && board[nextY][nextX] != undefined){
                         return true;
                     }
                 }
@@ -229,12 +230,23 @@ function Game(x,y,figures){
                 this.FigureWidith(this.activeFigure[0]);
         }
         //rotate pieces
-        
+        this.rotatePiece=(figure)=>{
+            let newFigure=[]
+            for(let i=0;i<figure.length;i++){
+                let element=[]
+                for(let j=0;j<figure[i].length;j++){
+                    element.push(figure[j][i])
+                }
+                newFigure.push(element)
+            }
+            return newFigure
+        }
         //player moves
         switch (move){
-            /*case "ArrowUp":
-                this.y -= 1;
-                break;*/
+            case "ArrowUp":
+                this.activeFigure[0]=this.rotatePiece(this.activeFigure[0])
+                this.FigureWidith(this.activeFigure[0])
+                break;
             case "ArrowDown":
                 if(this.collision(0,1,this.activeFigure[0])){
                     this.drawOldFigure(this.activeFigure[0],this.activeFigure[1])
@@ -243,21 +255,24 @@ function Game(x,y,figures){
                 this.y += 1;
                 break;
             case "ArrowRight":
-                this.x+this.maximunFigureWidith>=columns ? this.x=this.x : this.x++;
-                if(this.collision(1,0,this.activeFigure[0])){
+                //this.x+this.maximunFigureWidith>=columns ? this.x=this.x : this.x++;
+                if(this.collision(1,0,this.activeFigure[0]) && this.collision(0,1,this.activeFigure[0])){
                     this.drawOldFigure(this.activeFigure[0],this.activeFigure[1]);
                     this.startOver();
+                }else{
+                    this.x++;
                 }
                 break;
             case "ArrowLeft":
-                this.x<=0 ? this.x=this.x : this.x -=1;
+                //this.x<=0 ? this.x=this.x : this.x--
                 if(this.collision(-1,0,this.activeFigure[0])){
                     this.drawOldFigure(this.activeFigure[0],this.activeFigure[1]);
                     this.startOver();
+                }else{
+                    this.x -=1;
                 }
                 break;
             case "Enter":
-                console.log("aasa")
                 this.startOver()
                 break;
         }

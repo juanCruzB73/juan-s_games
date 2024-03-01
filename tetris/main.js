@@ -136,23 +136,11 @@ function Game(x,y,figures){
     this.activeFigure=this.newFigure(this.figures)
 
     //calculate widith of current figure
-    this.maximunFigureWidith=0;
-    this.FigureWidith=(figure)=>{
-        switch(figure[0].length){
-            case 2:
-                this.maximunFigureWidith=2;
-                break;
-            case 3:
-                this.maximunFigureWidith=3;
-                break;
-            case 4:
-                this.maximunFigureWidith=4;
-        }
-    }
-    this.FigureWidith(this.activeFigure[0])
+    
         //calculate maximun height of piece
-        this.maximunFigureHeight=0;
+        
         this.figureHeight=(figure)=>{
+            maximunFigureHeight=0;
             for(let i=0;i<figure.length;i++){
                 for(let j=0;j<figure[i].length;j++){
                     if(figure[i][j]==1){
@@ -162,12 +150,13 @@ function Game(x,y,figures){
                 }
 
             }
+            return this.maximunFigureHeight
         }
-        this.figureHeight(this.activeFigure[0])
+        this.maximunFigureHeight=this.figureHeight(this.activeFigure[0])
 
         //figure down per second
         this.downPerSecond=()=>{   
-            if(this.y>=20-this.maximunFigureHeight || this.collision(0,1,this.activeFigure[0])){
+            if(this.collision(0,1,this.activeFigure[0])){
                 this.drawOldFigure(this.activeFigure[0],this.activeFigure[1])
                 this.startOver()
             }
@@ -190,20 +179,16 @@ function Game(x,y,figures){
                     
                     let nextX=this.x+j+x;
                     let nextY=this.y+i+y;
-                    
-                    /*if(nextX >= rows || nextX == 0 ){
-                        return false
-                    }*/
-                    // skip board[-1]
-                    if(nextY < 0){
+
+                    if(nextY <= 0 || nextX <= 0){
                         continue;
                     }
-                    /*if((nextX <= 0 || nextX >= columns || nextY >= rows)){
-                        return true;
-                    }*/
+                    if (nextY < 0 || nextY >= rows || nextX < 0 || nextX >= columns) {
+                        return true; // Collision with boundaries
+                    }
+                    
                     //check for old figures
-                    console.log(board[nextY][nextX])
-                    if(board[nextY][nextX] != notOccupied && board[nextY][nextX] != undefined){
+                    if(board[nextY][nextX] != notOccupied){
                         return true;
                     }
                 }
@@ -239,7 +224,9 @@ function Game(x,y,figures){
                 }
                 newFigure.push(element)
             }
-            return newFigure
+            if(!this.collision(0,0,newFigure)){
+                return newFigure
+            }
         }
         //player moves
         switch (move){
@@ -256,7 +243,7 @@ function Game(x,y,figures){
                 break;
             case "ArrowRight":
                 //this.x+this.maximunFigureWidith>=columns ? this.x=this.x : this.x++;
-                if(this.collision(1,0,this.activeFigure[0]) && this.collision(0,1,this.activeFigure[0])){
+                if(this.collision(1,0,this.activeFigure[0])){
                     this.drawOldFigure(this.activeFigure[0],this.activeFigure[1]);
                     this.startOver();
                 }else{
@@ -264,19 +251,18 @@ function Game(x,y,figures){
                 }
                 break;
             case "ArrowLeft":
-                //this.x<=0 ? this.x=this.x : this.x--
-                if(this.collision(-1,0,this.activeFigure[0])){
+                if(!this.collision(-1,0,this.activeFigure[0]) && this.x>0){
+                    this.x--
+                }else{
                     this.drawOldFigure(this.activeFigure[0],this.activeFigure[1]);
                     this.startOver();
-                }else{
-                    this.x -=1;
                 }
                 break;
             case "Enter":
                 this.startOver()
                 break;
         }
-        if(this.y<0 && (this.collision(0,1,this.activeFigure[0]))){ 
+        if(this.y<0 && (this.collision(0,0,this.activeFigure[0]))){ 
             setBoard(board);
             unDrawFigure(this.x,this.y,this.activeFigure[0]);
             startGame=false

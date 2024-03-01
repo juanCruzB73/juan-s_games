@@ -90,7 +90,7 @@ let drawBoard=()=>{
 
 //figures
 let figureX=3
-let figureY=-2
+let figureY=0
 
 function drawSquare(x,y,color){
     context.fillStyle = color;
@@ -156,10 +156,10 @@ function Game(x,y,figures){
 
         //figure down per second
         this.downPerSecond=()=>{   
-            if(this.collision(0,1,this.activeFigure[0])){
-                this.drawOldFigure(this.activeFigure[0],this.activeFigure[1])
-                this.startOver()
-            }
+            if(this.collision(0,1,this.activeFigure[0])){ 
+                    this.drawOldFigure(this.activeFigure[0],this.activeFigure[1])
+                    console.log("popo downSecond")
+                    this.startOver()}
             this.y += 1;
             
         }
@@ -167,7 +167,30 @@ function Game(x,y,figures){
 
         //the update function
         this.update=()=>{
-        
+            this.collisionBorders=(x,y,piece)=>{
+                for(let i=0;i<piece.length;i++){//rows
+                    for(let j=0;j<piece[i].length;j++){
+    
+                        if(!piece[i][j]){
+                            continue;
+                        }
+                        
+                        let nextX=this.x+j+x;
+                        let nextY=this.y+i+y;
+    
+                        /*if(nextY <= 0 || nextX <= 0){
+                            continue;
+                        }*/
+                        /*if () {
+                            return true; // Collision with button
+                        }*/
+                        if ( nextX < 0 || nextX >= columns) {
+                            return true; // Collision with boundaries
+                        }
+                    }
+                }
+                return false
+            }
         //detect collision
         this.collision=(x,y,piece)=>{
             for(let i=0;i<piece.length;i++){//rows
@@ -183,10 +206,9 @@ function Game(x,y,figures){
                     if(nextY <= 0 || nextX <= 0){
                         continue;
                     }
-                    if (nextY < 0 || nextY >= rows || nextX < 0 || nextX >= columns) {
+                    if (nextY < 0 ||  nextY >= rows) {
                         return true; // Collision with boundaries
                     }
-                    
                     //check for old figures
                     if(board[nextY][nextX] != notOccupied){
                         return true;
@@ -210,9 +232,9 @@ function Game(x,y,figures){
                 this.x=x;
                 this.y=y;
                 this.activeFigure=this.newFigure(this.figures)
-                this.maximunFigureHeight=0;
-                this.figureHeight(this.activeFigure[0])
-                this.FigureWidith(this.activeFigure[0]);
+                //this.maximunFigureHeight=0;
+                //this.figureHeight(this.activeFigure[0])
+                //this.FigureWidith(this.activeFigure[0]);
         }
         //rotate pieces
         this.rotatePiece=(figure)=>{
@@ -237,25 +259,34 @@ function Game(x,y,figures){
             case "ArrowDown":
                 if(this.collision(0,1,this.activeFigure[0])){
                     this.drawOldFigure(this.activeFigure[0],this.activeFigure[1])
+                    console.log("popo arrow down")
                     this.startOver()
                 }
                 this.y += 1;
                 break;
             case "ArrowRight":
-                //this.x+this.maximunFigureWidith>=columns ? this.x=this.x : this.x++;
-                if(this.collision(1,0,this.activeFigure[0])){
+                if(this.collision(0,-1,this.activeFigure[0])){
+                    this.drawOldFigure(this.activeFigure[0],this.activeFigure[1]);
+                    console.log("popo arrow right")
+                    this.startOver();
+                    
+                }else if(!this.collisionBorders(1,0,this.activeFigure[0])){
+                    this.x++;
+                }
+                /*if(this.collision(1,0,this.activeFigure[0])){
                     this.drawOldFigure(this.activeFigure[0],this.activeFigure[1]);
                     this.startOver();
                 }else{
                     this.x++;
-                }
+                }*/
                 break;
             case "ArrowLeft":
-                if(!this.collision(-1,0,this.activeFigure[0]) && this.x>0){
-                    this.x--
-                }else{
+                if(this.collision(0,-1,this.activeFigure[0])){
                     this.drawOldFigure(this.activeFigure[0],this.activeFigure[1]);
+                    console.log("popo arrow right")
                     this.startOver();
+                }else if(!this.collisionBorders(-1,0,this.activeFigure[0])){
+                    this.x--
                 }
                 break;
             case "Enter":
@@ -265,9 +296,11 @@ function Game(x,y,figures){
         if(this.y<0 && (this.collision(0,0,this.activeFigure[0]))){ 
             setBoard(board);
             unDrawFigure(this.x,this.y,this.activeFigure[0]);
+            console.log("coñooo aaa")
             startGame=false
         }else{
             drawBoard()
+            console.log("coñooo")
             drawFigure(this.x,this.y,this.activeFigure[0],this.activeFigure[1])
         }
     }

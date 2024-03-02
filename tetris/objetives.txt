@@ -1,4 +1,4 @@
-4.delete pieces when full row
+FIX:
+
 5.score
 6.rotate pieces(special rotate in edges)
-7.repair edges of board

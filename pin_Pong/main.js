@@ -20,7 +20,7 @@ document.addEventListener("keydown",(event)=>{
     homeScreem()
 })
 
-context.font='4vw poppins';
+context.font="3vw monospace";
 
 //function wich strat the game if enter is pressed 
 function homeScreem(){
@@ -38,8 +38,10 @@ document.addEventListener("keyup",(event)=>{
 })
 
 //ball speed
-let xMovement=8;
-let yMovement=8;
+let ballXMovement=9;
+let ballYMovement=9;
+let xMovement=10;
+let yMovement=10;
 
 //objet that moves ball, player and bot
 function Movement(x,y,ballX,ballY,botX,botY){
@@ -53,28 +55,42 @@ function Movement(x,y,ballX,ballY,botX,botY){
     this.botY=botY;
     this.xMovement = xMovement;
     this.yMovement = yMovement;
+    this.ballXMovement=ballXMovement;
+    this.ballYMovement=ballYMovement;
+    let playerScoreText=playerScore.toString();
+    let botScoreText = botScore.toString();
 
     //function wich draws player,bot and ball
     this.draw=()=>{
+        context.beginPath()
+        //score
+        context.fillText('Player',canvas.width*1/10,canvas.height/10);
+        context.fillText(playerScoreText,canvas.width*1/7,canvas.height/5);
+        context.fillText('Machine',canvas.width/1.3,canvas.height/10);
+        context.fillText(botScoreText,canvas.width/1.2,canvas.height/5);
 
         //player
+        context.beginPath()
         context.fillRect(this.x,this.y,15,100)
 
         //ball
         context.beginPath()
         context.arc(this.ballX,this.ballY,10,0,2 * Math.PI)
-        context.fillStyle = "black";
+        context.fillStyle = "white";
         context.fill();
 
         //bot
-        context.beginPath()
+        context.beginPath() 
         context.fillRect(this.botX,this.botY,15,100)
 
     }
 
     //function updates positions of player bot and ball
     this.update=()=>{
-
+        if(playerScore>5 ){
+            this.yMovement=10;
+            this.xMovement=10;
+        }
         //prevent player to leave the map
         this.y <= 0 && move=="ArrowUp" ? move='' : move=move;
         this.y+100 >= canvas.height && move=="ArrowDown" ? move='' : move=move
@@ -93,14 +109,14 @@ function Movement(x,y,ballX,ballY,botX,botY){
         }
 
         //ball interaction with top and down border
-        if(this.ballY>=canvas.height-13 || this.ballY-13<=1){
-            this.yMovement= -this.yMovement
+        if(this.ballY+15>=canvas.height || this.ballY-15<=0){
+            this.ballYMovement= -this.ballYMovement
         }
 
         //ball interaction with player
-        if(this.ballX-15 <= canvas.width/50 && this.ballY <= this.y+120 && this.ballY >= this.y){
-            this.xMovement = -this.xMovement;
-            this.yMovement = -this.yMovement;
+        if(this.ballX-15 <= this.x && this.ballY >= this.y && this.ballY <= this.y+100 ){
+            this.ballXMovement = -this.ballXMovement;
+            this.ballYMovement = -this.ballYMovement;
         }
 
         //player moves based on keys
@@ -129,24 +145,16 @@ function Movement(x,y,ballX,ballY,botX,botY){
             this.botY -= (yMovement)
         }
 
-        /*if(this.ballX-15 <= this.y && this.ballY <= this.y+120 && this.ballY >= this.y){
-            this.xMovement = -this.xMovement+(Math.random()*0.5);
-            this.yMovement = -this.yMovement+(Math.random()*0.5);
-        }*/
-        
-
         //bot interaction with ball
         if(this.ballX+15 >= this.botX && this.ballY <= this.botY+100 && this.ballY>=this.botY ){
-            this.xMovement = -this.xMovement+(Math.random()*0.5);
-            this.yMovement = -this.yMovement+(Math.random()*0.5);
+            this.ballXMovement = -this.ballXMovement+(Math.random()*0.5);
+            this.ballYMovement = -this.ballYMovement+(Math.random()*0.5);
         }
 
-        this.ballX += this.xMovement;
-        this.ballY += this.yMovement;
+        this.ballX += this.ballXMovement;
+        this.ballY += this.ballYMovement;
 
         this.draw()
-
-
     }
 }
 let game=''
@@ -160,6 +168,7 @@ function init(){
     let playerScoreText=playerScore.toString();
     let botScoreText = botScore.toString();
     game = new Movement(x,y,canvas.width/2,canvas.height/2,botX,botY)
+    context.fillStyle = "white";
     context.fillText('Player',canvas.width*1/10,canvas.height/10);
     context.fillText(playerScoreText,canvas.width*1/7,canvas.height/5);
     context.fillText('Machine',canvas.width/1.3,canvas.height/10);

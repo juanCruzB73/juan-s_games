@@ -67,7 +67,7 @@ let rows=20;
 let square=30;
 
 //board
-let notOccupied="white"
+let notOccupied="#101010"
 let board=[]
 
 let setBoard=(board)=>{
@@ -97,7 +97,7 @@ let figureY=-1
 function drawSquare(x,y,color){
     context.fillStyle = color;
     context.fillRect(x*square,y*square,square,square)
-    context.strokeStyle="BLACK";
+    context.strokeStyle="#2C2C2C";
     context.strokeRect(x*square,y*square,square,square)
 }
 
@@ -290,7 +290,8 @@ function Game(x,y,figures){
             case " ":
                 while(!this.collision(0,1,this.activeFigure[0])){
                     this.y++
-                } 
+                }
+                move=""
                 break;
         }
         if(this.y<=0 && (this.collision(0,0,this.activeFigure[0]))){ 
@@ -329,8 +330,8 @@ function init(){
     context.beginPath();
     drawBoard();
     context.font = "30px Arial";
-    context.fillStyle = "black";
-    looser ? context.fillText("Game over",100,100) : '';
+    context.fillStyle = "white";
+    looser ? context.fillText("Game over",canvas.width/4,canvas.height/2) : '';
 }
 
 init()

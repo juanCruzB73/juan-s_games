@@ -5,12 +5,13 @@
 body{
     display: flex;
     flex-wrap: wrap-reverse;
-    background-color:#181818;
+    background-color:#111111;
 }
 header{
     display: flex;
     flex-direction: column;
     margin: 5px;
+    margin-left: 15px;
     color: #F0F0F0;
 }
 div{
@@ -24,5 +25,5 @@ div{
 }
 canvas{
     
-    border: 2px solid red;
+    border: 2px solid white;
 }

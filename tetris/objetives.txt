@@ -1,4 +1,0 @@
-FIX:
-
-5.score
-6.rotate pieces(special rotate in edges)

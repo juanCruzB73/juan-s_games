@@ -1,0 +1,12 @@
+*{
+    background-color: aqua;
+}
+body{
+    text-align: center;
+}
+header{
+    text-align: start;
+}
+canvas{
+    border: black 1px solid;
+}

@@ -114,7 +114,7 @@ function Movement(x,y,ballX,ballY,botX,botY){
         }
 
         //ball interaction with player
-        if(this.ballX-15 <= this.x && this.ballY >= this.y && this.ballY <= this.y+100 ){
+        if(this.ballX <= this.x+15 && this.ballY >= this.y && this.ballY <= this.y+100 ){
             this.ballXMovement = -this.ballXMovement;
             this.ballYMovement = -this.ballYMovement;
         }

@@ -1,12 +1,13 @@
 *{
-    background-color: aqua;
+    color: beige;
 }
 body{
     text-align: center;
+    background-color:#111111;
 }
 header{
     text-align: start;
 }
 canvas{
-    border: black 1px solid;
+    
 }

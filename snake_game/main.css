@@ -1,0 +1,23 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    
+}
+div{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 8px;
+}
+h3{
+    display: flex;
+    align-self: center;
+}
+canvas{
+    margin: 8px;
+    border: 1px solid black;
+}

@@ -3,24 +3,31 @@ let context = canvas.getContext('2d');
 canvas.width=innerWidth/2;
 canvas.height=innerHeight/1.5;
 
-let gameOn=false
 context.beginPath();
+
+let gameOn=false
 let size=30;
 let snakeX=100;
 let snakeY=100;
 let move=''
+let moves=["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Escape","Enter"]
 document.addEventListener("keydown",(event)=>{
     event.preventDefault();
+    previusMove=move
     move = event.key;
     console.log(move)
-    if(gameOn==false && move=="Enter"){
-        gameOn=true;
-        size=30;
-        long=1
-        snakeX=100;
-        snakeY=100;
-        createSnake()
-        placeFood()
+    if(moves.includes(move)){
+        if(gameOn==false && move=="Enter"){
+            gameOn=true;
+            size=30;
+            long=1
+            snakeX=100;
+            snakeY=100;
+            createSnake()
+            placeFood()
+        }
+    }else{
+        move=previusMove
     }
 })
 
@@ -92,13 +99,16 @@ function eatFood(){
     }
     return false
 }
-
 function moveSnake(){
     let headX=snake[0].snakeX;
     let headY=snake[0].snakeY;
     switch(move){
         case "ArrowUp":
-            checkCollision() ? gameOn=falsemeOn=false : headY-=size;
+            if(previusMove=="ArrowDown" && snake.length>1){
+                checkCollision() ? gameOn=false : headY+=size;
+            }else{
+                checkCollision() ? gameOn=false : headY-=size;
+            }
             if(eatFood()){
                 placeFood()
                 long++;
@@ -106,16 +116,23 @@ function moveSnake(){
             } 
             break;
         case "ArrowDown":
-            checkCollision() ? gameOn=false : headY+=size;
+            if(previusMove=="ArrowUp" && snake.length>1){
+                checkCollision() ? gameOn=false : headY-=size;
+            }else{
+                checkCollision() ? gameOn=false : headY+=size;
+            }
             if(eatFood()){
                 placeFood()
                 long++;
                 createSnake()
-                
             } 
             break;
         case "ArrowLeft":
-            checkCollision() ? gameOn=false : headX-=size;
+            if(previusMove=="ArrowRight" && snake.length>1){
+                checkCollision() ? gameOn=false : headX+=size;
+            }else{
+                checkCollision() ? gameOn=false : headX-=size;
+            }
             if(eatFood()){
                 placeFood()
                 long++;
@@ -123,7 +140,11 @@ function moveSnake(){
             }
             break
         case "ArrowRight":
-            checkCollision() ? gameOn=false : headX+=size;
+            if(previusMove=="ArrowLeft" && snake.length>1){
+                checkCollision() ? gameOn=false : headX-=size;
+            }else{
+                checkCollision() ? gameOn=false : headX+=size;
+            }
             if(eatFood() ){
                 placeFood()
                 long++;
@@ -132,6 +153,10 @@ function moveSnake(){
             break;
         case "Escape":
             gameOn=false
+            break;
+        default:
+            move=previusMove;
+            break;
     }
     for(let i=snake.length-1;i>0;i--){
         snake[i].update(snake[i-1].snakeX,snake[i-1].snakeY);

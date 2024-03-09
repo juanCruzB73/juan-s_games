@@ -1,3 +1,4 @@
+0.MENU
 1-flappy bird
 2-pacman
 4-chess

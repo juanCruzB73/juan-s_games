@@ -1,0 +1,4 @@
+calibrar imagenes
+poner texto a imagenes cuando mouose
+agrandar imagenes cuando mouse
+estilos de home

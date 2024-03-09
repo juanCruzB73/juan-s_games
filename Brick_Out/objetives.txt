@@ -1,3 +1,0 @@
-1.collision with figures
-2.deleate figures when collision
-3.

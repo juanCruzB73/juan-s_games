@@ -280,11 +280,14 @@ function Game(x,y,figures){
                     move='';
                 }
                 break;
-            case "Enter":
+            case "Enter" && startGame==false:
                 this.startOver()
                 setBoard(board)
                 break;
             case "Escape":
+                setBoard(board);
+                unDrawFigure(this.x,this.y,this.activeFigure[0]);
+                looser=true;
                 startGame=false
                 break
             case " ":

@@ -1,9 +1,15 @@
 *{
     color: beige;
+    font-family: "roboto","sans-serif";
+    text-decoration: none;
+    font-size: 2vw;
 }
 body{
     text-align: center;
     background-color:#111111;
+}
+a{
+    font-size: 5vh;
 }
 header{
     text-align: start;

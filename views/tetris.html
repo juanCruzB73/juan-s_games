@@ -3,18 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../public/styles/tetris.css">
     <title>Juan's Tetris</title>
 </head>
 <body>
-    <div>score: <div id="score">0</div></div>
-    <canvas></canvas>
     <header>
-        <h1>Tetris</h1>
+        <h1>Juan's Tetris</h1>
+        <a href="./home.html">Main menu</a>
+    </header>
+    <canvas></canvas>
+    <article>
         <h3>press "enter" to Start the game</h3>
         <h3>press "esc" to quit the game</h3>
-    </header>
+        <div>score: <div id="score">0</div></div>
+    </article>
+    
     <script src="../scripts/tetris.js"></script>
 </body>
 </html>

@@ -1,7 +1,9 @@
 *{
     margin: 0px;
-    font-family: "Roboto Mono", monospace;
+    font-family: "roboto","sans-serif";
     color: #FFFFFF;
+    text-decoration: none;
+    font-size: 2vw;
 }
 body{
     text-align: center;
@@ -15,8 +17,10 @@ header{
     justify-content: space-between;
     color: "#FFFFFF";
 }
+a{
+    font-size: 5vh;
+}
 canvas{
     border: 1px white solid;
     background-color: #101010;
-    font-family: "Roboto Mono", monospace;
 }

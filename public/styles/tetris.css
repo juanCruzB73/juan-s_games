@@ -1,18 +1,28 @@
 *{
     margin:0;
-    font-family: "poppins",sans-serif;
+    font-family: "roboto","sans-serif";
+    color: #F0F0F0;
+    text-decoration: none;
 }
 body{
     display: flex;
-    flex-wrap: wrap-reverse;
     background-color:#111111;
 }
 header{
     display: flex;
+    margin: 10px;
     flex-direction: column;
-    margin: 5px;
-    margin-left: 15px;
-    color: #F0F0F0;
+    align-self: flex-start;
+    justify-content: right;
+    max-height: 11vh;
+    font-size: 4vh;
+}
+article{
+    display: flex;
+    margin: 10px;
+    flex-direction: column;
+    align-self: center;
+    font-size: 2vw;
 }
 div{
     display: flex;
@@ -23,7 +33,12 @@ div{
     margin-right: 20px;
     color: #F0F0F0;
 }
+h3{
+    margin: 10px;
+}
+a{
+    font-size: 5vh;
+}
 canvas{
-    
     border: 2px solid white;
 }

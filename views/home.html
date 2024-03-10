@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../public/styles/home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <title>juan's games</title>
 </head>
 <body>
-    <header>
         <h1>Juan's games</h1>
-        <nav>
-            <a href="./ping_pong.html"><img src="../public/img/pin_pong.png" alt=""></a>
-            <a href="./brick_out.html"><img src="../public/img/bricks_out.png" alt=""></a>
-            <a href="./snake.html"><img src="../public/img/snake.png" alt=""></a>
-            <a href="./tetris.html"><img src="../public/img/tetris.png" alt=""></a>
+        <nav id="games">
+            <a href="./ping_pong.html" name="Ping Pong"><img src="../public/img/pin_pong_resizes.jpg" alt=""></a>
+            <a href="./brick_out.html" name="Brick Out"><img src="../public/img/bricks_out.png" alt=""></a>
+            <a href="./snake.html" name="Snake"><img src="../public/img/snake.png" alt=""></a>
+            <a href="./tetris.html" name="Tetris"><img src="../public/img/tetris_resized.jpg" alt=""></a>
         </nav>
-    </header>
+        <div><p id="gameName"></p></div>
+        <script src="../scripts/home.js"></script>
 </body>
 </html>

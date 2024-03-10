@@ -1,10 +1,39 @@
 *{
     margin: 0px;
     padding: 0px;
+    font-family: "Roboto", sans-serif;
+}
+body{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color:#111111;
+    color: white;
+    margin: 15px;
+}
+nav{
+    display: flex;
+    align-self: center;
+}
+a{
+    margin: 8px;
 }
 img{
-    max-width: 100px;
-    max-height: 100px;
+    max-width: 200px;
+    max-height: 150px;
+    width: 160px;
+    height: 100px;
+    border: 2px white solid;
+    border-radius: 15px;
+}
+img:hover{
     width: 200px;
-    height: 200px;
+    height: 130px;
+    transition: 1s;
+    border: 4px yellow solid;
+}
+div{
+    font-size: 10vh;
+    margin: auto;
+    margin-top: 100px;
 }
